@@ -15,25 +15,25 @@ export default class Signup extends React.Component {
     Actions.login()
   }
 
-	render(){
-		return(
-			<ImageBackground source={require('../imagenes/back.jpg')} style={style.container}>
-				<View >	
-					<View style={[style.box]}>
+  render(){
+    return(
+      <ImageBackground source={require('../imagenes/back.jpg')} style={style.container}>
+        <View > 
+          <View style={[style.box]}>
               <Text style={style.textmenu}>REGISTRO</Text> 
               <Image
                 source={require('../imagenes/logo.png')}
                 style={style.logoImagen}/>
-          </View>    			
-					<Form type="Signup"/>
-					<View style={styles.signupTextcont}>
-						<Text>¿Ya tienes una cuenta? </Text>
-	          		<TouchableOpacity onPress={this.login}><Text style={styles.signupText}> Iniciar Sesión.</Text></TouchableOpacity>						
-					</View>
-				</View>
-			</ImageBackground>
-			)
-	}
+          </View>         
+          <Form type="Signup"/>
+          <View style={styles.signupTextcont}>
+            <Text>¿Ya tienes una cuenta? </Text>
+                <TouchableOpacity onPress={this.login}><Text style={styles.signupText}> Iniciar Sesión.</Text></TouchableOpacity>           
+          </View>
+        </View>
+      </ImageBackground>
+      )
+  }
 }
 
 const style = StyleSheet.create({

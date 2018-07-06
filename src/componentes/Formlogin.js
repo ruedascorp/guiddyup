@@ -84,9 +84,9 @@ export default class Formlogin extends React.Component {
        }
     }
 
-	render(){    
-		return(
-			<View style={style.container}>                
+  render(){    
+    return(
+      <View style={style.container}>                
         <TextInput style={styles.inputBox} 
           underlineColorAndroid='rgba(0,0,0,0)' 
           placeholder='Email'
@@ -109,9 +109,9 @@ export default class Formlogin extends React.Component {
         <TouchableOpacity style={styles.button} onPress={() => this.loginMain()}>
           <Text style={styles.buttonText}>{this.props.type}</Text>
         </TouchableOpacity>
-			</View>
-			)
-	}
+      </View>
+      )
+  }
 }
 
 const style = StyleSheet.create({

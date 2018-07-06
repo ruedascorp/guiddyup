@@ -44,9 +44,9 @@ constructor(props) {
       }
     }
 
-	render(){    
-		return(		
-			<View style={style.container}>			
+  render(){    
+    return(   
+      <View style={style.container}>      
         <TextInput style={styles.inputBox} 
           underlineColorAndroid='rgba(0,0,0,0)' 
           placeholder='Nombre'          
@@ -104,9 +104,9 @@ constructor(props) {
         <TouchableOpacity style={styles.button} onPress={() => this.registro2()}>
           <Text style={styles.buttonText}>Siguiente</Text>
         </TouchableOpacity>
-			</View>
-			)
-	}
+      </View>
+      )
+  }
 }
 
 const style = StyleSheet.create({

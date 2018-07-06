@@ -84,11 +84,11 @@ constructor(props) {
       }
     }
 
-	render(){
+  render(){
     let { image } = this.state;
 
-		return(		
-			<View style={style.container}>		
+    return(   
+      <View style={style.container}>    
 
         <TextInput style={styles.inputBox} 
           underlineColorAndroid='rgba(0,0,0,0)' 
@@ -149,9 +149,9 @@ constructor(props) {
         <TouchableOpacity onPress={() => this.registro()} style={styles.button}>
           <Text style={styles.buttonText}>Registrar</Text>
         </TouchableOpacity>
-		  </View>
-		)    
-	}
+      </View>
+    )    
+  }
 
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
