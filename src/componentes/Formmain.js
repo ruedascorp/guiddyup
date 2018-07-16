@@ -14,9 +14,9 @@ export default class Formmain extends React.Component {
     Actions.carsearch()
   }
 
-  changehome(){
-
-  }
+//changehome(){
+//
+//  }
 
   renovarcontrato(){
 
@@ -37,9 +37,10 @@ export default class Formmain extends React.Component {
 
 render() {
     return (
+
         <View style={styles.container}>
             <View style={[styles.box, styles.box1]}>
-                <Text style={styles.textmenu}>MENÚ</Text> 
+                <Text style={styles.textmenu}> MENÚ </Text> 
                 <Image
                   source={require('../imagenes/logo.png')}
                   style={styles.logoImagen}/>
@@ -61,7 +62,7 @@ render() {
               <TouchableOpacity style={styles.button} onPress={this.changehome}>
               <Text style={styles.buttonText}>CHANGE HOME</Text>
               </TouchableOpacity>
-            </View>
+            </View>{/* sdsad */}
       
             <View style={[styles.box, styles.box2]}>
               <Image
@@ -125,7 +126,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textShadowColor: '#000000',
     textShadowRadius:2,
-    textShadowOffset: {width: 2,height: 2} 
+    textShadowOffset: {width: 2,height: 2},
+    textAlign: 'center'
   },
   logoImagen:{    
     width: 100,

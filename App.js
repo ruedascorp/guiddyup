@@ -5,12 +5,12 @@ import Navegacion from './src/Navegacion';
 
 export default class App extends React.Component {
   render() {
-StatusBar.setBarStyle('light-content', true);
-    return (
-      
+StatusBar.setBarStyle('light-content', true);  	
+return (
+    	
         <View style={styles.container}>                    
           <Navegacion/>          
-        </View>      
+        </View> 
     );
   }
 }
@@ -18,6 +18,6 @@ StatusBar.setBarStyle('light-content', true);
 const styles = StyleSheet.create({
   container: {
     flex: 1,    
-  },
+},
 
 });

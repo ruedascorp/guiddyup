@@ -10,29 +10,28 @@ var { height,width } = Dimensions.get('window');
 export default class Signup2 extends React.Component {
 
 login(){
-	Actions.login()
+  Actions.login()
 }
 
 render(){
-	return(
-		<ImageBackground source={require('../imagenes/back.jpg')} style={style.container}>
-			<View>				
-    		<View style={[style.box]}>
+  return(
+    <ImageBackground source={require('../imagenes/back.jpg')} style={style.container}>
+      <View>        
+        <View style={[style.box]}>
             <Text style={style.textmenu}>REGISTRO</Text> 
             <Image
               source={require('../imagenes/logo.png')}
               style={style.logoImagen}/>
-        </View>				
+        </View>				  
         <Form nombre={this.props.nombre} apellido = {this.props.apellido} 
           email= {this.props.email}
           telefono= {this.props.telefono} 
           password= {this.props.password} />
-
-				
-			</View>
-		</ImageBackground>
-		)
-	}
+        
+      </View>
+    </ImageBackground>
+    )
+  }
 }
 
 const style = StyleSheet.create({

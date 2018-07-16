@@ -5,31 +5,35 @@ import {Actions} from 'react-native-router-flux';
 import styles from '../styles';
 
 var { height,width } = Dimensions.get('window');
+
+var box_count = 7;
+var box_height = height / box_count;
+
 export default class Signup extends React.Component {
 
   login(){
     Actions.login()
   }
 
-	render(){
-		return(
-			<ImageBackground source={require('../imagenes/back.jpg')} style={style.container}>
-				<View >	
-					<View style={[style.box]}>
+  render(){
+    return(
+      <ImageBackground source={require('../imagenes/back.jpg')} style={style.container}>
+        <View > 
+          <View style={[style.box]}>
               <Text style={style.textmenu}>REGISTRO</Text> 
               <Image
                 source={require('../imagenes/logo.png')}
                 style={style.logoImagen}/>
-          </View>    			
-					<Form type="Signup"/>
-					<View style={styles.signupTextcont}>
-						<Text>¿Ya tienes una cuenta? </Text>
-	          		<TouchableOpacity onPress={this.login}><Text style={styles.signupText}> Iniciar Sesión.</Text></TouchableOpacity>						
-					</View>
-				</View>
-			</ImageBackground>
-			)
-	}
+          </View>         
+          <Form type="Signup"/>
+          <View style={styles.signupTextcont}>
+            <Text>¿Ya tienes una cuenta? </Text>
+                <TouchableOpacity onPress={this.login}><Text style={styles.signupText}> Iniciar Sesión.</Text></TouchableOpacity>           
+          </View>
+        </View>
+      </ImageBackground>
+      )
+  }
 }
 
 const style = StyleSheet.create({
@@ -57,11 +61,12 @@ const style = StyleSheet.create({
     fontWeight: 'bold',
     textShadowColor: '#000000',
     textShadowRadius:2,
-    textShadowOffset: {width: 2,height: 2} 
+    textShadowOffset: {width: 2,height: 2},
+    textAlign: 'center'
   },
   logoImagen:{    
     width: 100,
-    height: 30,  
+    height: box_height-40,
     resizeMode: "contain",    
     
   },
