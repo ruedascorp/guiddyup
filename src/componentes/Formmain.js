@@ -11,7 +11,7 @@ var box_height = height / box_count;
 export default class Formmain extends React.Component {
 
   vehiculo(){
-
+    Actions.carsearch()
   }
 
   changehome(){
@@ -160,14 +160,14 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize:20, 
     fontWeight:'500',
-    color:'#F0F0F0',
+    color:'#000000',
     textAlign:'center',
     textAlignVertical:'center',    
   },
   buttonTextf: {
     fontSize:16, 
     fontWeight:'500',
-    color:'#F0F0F0',
+    color:'#000000',
     textAlign:'center',
     textAlignVertical:'center',
 

@@ -5,23 +5,33 @@ import styles from '../styles';
 
 export default class Formsignup extends React.Component {
 constructor(props) {
-    super(props)
+    super(props);
     this.state = { 
       nombre: '',
       apellido:'',
       email:'',
       telefono:'',
       password:'',
-      passwordr:'' }
+      passwordr:''
+    }
   }
+
+
+
 
   registro2(){
     //if(this.state.passwordr != this.state.password){
      //   Alert.alert('No coincide la contraseña!');
     //}else{
+      console.log('Formsignup: registro2:::' + this.state.nombre);
+
       Actions.signup2(
-        'formulario1', {
-          nombre: this.nombre
+         {
+          nombre: this.state.nombre,
+          apellido: this.state.apellido,
+          email: this.state.email,
+          telefono: this.state.telefono,
+          password: this.state.password,         
         }
       )  
     //}    
@@ -34,7 +44,7 @@ constructor(props) {
       }
     }
 
-	render(){
+	render(){    
 		return(		
 			<View style={style.container}>			
         <TextInput style={styles.inputBox} 
@@ -56,6 +66,7 @@ constructor(props) {
         <TextInput style={styles.inputBox} 
           underlineColorAndroid='rgba(0,0,0,0)' 
           placeholder='Email'
+          autoCapitalize = 'none'
           selectionColor="#fff"
           keyboardType="email-address"
           ref={(input) => this.email = input}
@@ -74,6 +85,7 @@ constructor(props) {
         <TextInput style={styles.inputBox}
           underlineColorAndroid='rgba(0,0,0,0)' 
           placeholder='Password'
+          autoCapitalize = 'none'
           secureTextEntry={true}
           ref={(input) => this.password = input}
           onChangeText={(password) => this.setState({password})}
@@ -82,13 +94,14 @@ constructor(props) {
         <TextInput style={styles.inputBox} 
           underlineColorAndroid='rgba(0,0,0,0)' 
           placeholder='Repetir Password'
+          autoCapitalize = 'none'
           secureTextEntry={true}
           ref={(input) => this.passwordr = input}
           onChangeText={(passwordr) => this.setState({passwordr})}
           value={this.state.passwordr}
           onSubmitEditing ={() => this.validapass()}/> 
 
-        <TouchableOpacity style={styles.button} onPress={this.registro2}>
+        <TouchableOpacity style={styles.button} onPress={() => this.registro2()}>
           <Text style={styles.buttonText}>Siguiente</Text>
         </TouchableOpacity>
 			</View>

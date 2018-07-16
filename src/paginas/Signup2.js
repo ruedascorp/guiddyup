@@ -22,12 +22,13 @@ render(){
             <Image
               source={require('../imagenes/logo.png')}
               style={style.logoImagen}/>
-        </View>
-				<Form type="Signup2"/>
-				<View style={styles.signupTextcont}>
-					<Text>¿Ya tienes una cuenta? </Text>
-          <TouchableOpacity onPress={this.login}><Text style={styles.signupText}> Iniciar Sesión.</Text></TouchableOpacity>					
-				</View>
+        </View>				
+        <Form nombre={this.props.nombre} apellido = {this.props.apellido} 
+          email= {this.props.email}
+          telefono= {this.props.telefono} 
+          password= {this.props.password} />
+
+				
 			</View>
 		</ImageBackground>
 		)

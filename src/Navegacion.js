@@ -7,6 +7,7 @@ import Signup from './paginas/Signup';
 import Signup2 from './paginas/Signup2';
 import Main from './paginas/Main';
 import Terminos from './paginas/Terminos';
+import Carsearch from './paginas/Carsearch';
 
 export default class Navegacion extends React.Component {
 	render(){
@@ -18,6 +19,7 @@ export default class Navegacion extends React.Component {
 			      <Scene key="signup2" component={Signup2} title="Registro2"/>		      
 			      <Scene key="main" component={Main} title="Main"/>
 			      <Scene key="terminos" component={Terminos} title="Terminos"/>
+			      <Scene key="carsearch" component={Carsearch} title="Busqueda Vehiculos"/>
 			    </Stack>
 		  	</Router>
 			

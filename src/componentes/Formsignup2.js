@@ -4,10 +4,8 @@ import { ImagePicker } from 'expo';
 import DatePicker from 'react-native-datepicker'
 import {Actions} from 'react-native-router-flux';
 import styles from '../styles';
-import futch from '../Api';
 
 var { height,width } = Dimensions.get('window');
-
 
 
 export default class Formsignup2 extends React.Component {
@@ -17,54 +15,81 @@ constructor(props) {
       licencia: '',
       categoria:'',
       date:"2018-06-01",
-      image: null,
+      image: null,      
     }
   }
 
   registro(){
 
-    console.log('registro fetch:::');
+    console.log('Formsignup2: 2 registro fetch:::' + this.props.nombre);
+    console.log('Formsignup2: 2 registro fetch:::' + this.props.apellido);
+    console.log('Formsignup2: 2 registro fetch:::' + this.props.email);
+    console.log('Formsignup2: 2 registro fetch:::' + this.props.telefono);
+    console.log('Formsignup2: 2 registro fetch:::' + this.state.licencia);
+    console.log('Formsignup2: 2 registro fetch:::' + this.state.date);
+    console.log('Formsignup2: 2 registro fetch:::' + this.state.categoria);
+    console.log('Formsignup2: 2 registro fetch:::' + this.props.password);
+    console.log('Formsignup2: 2 registro fetch:::' + this.state.image);
+    if(this.props.nombre && this.props.apellido && this.props.email && this.props.telefono &&
+      this.state.licencia && this.state.categoria && this.props.password && this.state.image){
+      try{
+        console.log('registro fetch Entro Try:::');
+          fetch('http://cuetox.pythonanywhere.com/v1/usuarios/', {
+            method: 'POST',
+            headers: {        
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic amN1ZXRvOndlc2Y1MTE0',
+            },      
+            body: JSON.stringify({
+              nombre: this.props.nombre,
+              apellido: this.props.apellido,
+              email: this.props.email,
+              telefono: this.props.telefono,
+              numero_licencia: this.state.licencia,
+              vigencia_licencia: this.state.date,
+              categoria_licencia: this.state.categoria,
+              password: this.props.password,
+              imagen_licencia:null
+            }),
+            /*
+            imagen_licencia:{
+                uri: this.state.image,
+                type: 'image/jpeg',
+                name: 'testPhotoName'}
+            */
+          });
+        }catch(err){
+          console.log('falla fetch:::'+err.toString());
+        }
 
-try{
-  console.log('registro fetch Entro Try:::');
-    fetch('http://cuetox.pythonanywhere.com/v1/usuarios/', {
-      method: 'POST',
-      headers: {        
-        'Content-Type': 'application/json',
-        'Authorization': 'Basic amN1ZXRvOndlc2Y1MTE0',
-      },
-      body: JSON.stringify({
-        nombre: 'Rueda',
-        apellido: 'Rueda',
-        email: 'rueda1@ruedascorp.com',
-        telefono: '36788000',
-        numero_licencia: '1234567890',
-        vigencia_licencia: '2018-05-06',
-        categoria_licencia: '1',
-        password: 'rueda123',
-        imagen_licencia: null,
-      }),
-    });
-  }catch(err){
-    console.log('falla fetch:::'+err.toString());
-  }
 
-
-    Alert.alert(
-      'FIN REGISTRO',
-      'Usuario registrado correctamente!',
-      [        
-        {text: 'OK', onPress: Actions.login},
-      ],
-      { cancelable: false }
-      );
+          Alert.alert(
+            'FIN REGISTRO',
+            'Usuario registrado correctamente!',
+            [        
+              {text: 'OK', onPress: Actions.login},
+            ],
+            { cancelable: false }
+          );
+      }//IF
+      else{
+        Alert.alert(
+            'FIN REGISTRO',
+            'Favor de revisar información proporcionada!',
+            [        
+              {text: 'OK'},
+            ],
+            { cancelable: false }
+          );
+      }
     }
 
 	render(){
     let { image } = this.state;
 
 		return(		
-			<View style={style.container}>			
+			<View style={style.container}>		
+
         <TextInput style={styles.inputBox} 
           underlineColorAndroid='rgba(0,0,0,0)' 
           placeholder='Licencia'          
@@ -72,41 +97,46 @@ try{
           ref={(input) => this.licencia = input} 
           value={this.state.licencia}
           onChangeText={(licencia) => this.setState({licencia})}
-          onSubmitEditing={()=> this.categoria.focus()}/>
+          onSubmitEditing={()=> this.categoria.focus()}/>        
 
         <Picker 
           ref={(input) => this.categoria = input}
           selectedValue={this.state.categoria}
           style={styles.selectBox} 
-          onValueChange={(itemValue, itemIndex) => this.setState({categoria: itemValue})}>
-          <Picker.Item label="Automovilista" value="java"/>
-          <Picker.Item label="Chofer" value="js" />
+          onValueChange={(itemValue, itemIndex) => this.setState({categoria: itemValue})}>          
+          <Picker.Item label="Seleccione Tipo"/>
+          <Picker.Item label="Automovilista" value="Automovilista"/>
+          <Picker.Item label="Chofer" value="Chofer" />
         </Picker>
-              
-          <DatePicker
-            style={{width: 150}}
-            date={this.state.date}
-            mode="date"
-            placeholder="select date"
-            format="YYYY-MM-DD"
-            minDate="2014-01-01"
-            maxDate="2036-01-01"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                left: 0,
-                top: 4,
-                marginLeft: 0
-              },
-              dateInput: {
-                marginLeft: 36
-              }
-              // ... You can check the source to find the other keys.
-            }}
-            onDateChange={(date) => {this.setState({date: date})}}
-          />     
+             <View style={style.signupTextcont}>
+            <Text style={style.vigenciaText}>Vigencia: </Text>
+             
+            <DatePicker
+              style={{width: 150}}
+              date={this.state.date}
+              mode="date"
+              placeholder="select date"
+              format="YYYY-MM-DD"
+              minDate="2014-01-01"
+              maxDate="2036-01-01"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+                // ... You can check the source to find the other keys.
+              }}
+              onDateChange={(date) => {this.setState({date: date})}}
+            />     
+
+          </View>
                       
         <TouchableOpacity onPress={this._pickImage} style={styles.button}>
           <Text style={styles.buttonText}>Seleccionar Imagen</Text>
@@ -116,7 +146,7 @@ try{
           source={ image != null ? {uri: image} : require('../imagenes/nodisponible.jpg') } 
         />
 
-        <TouchableOpacity onPress={this.registro} style={styles.button}>
+        <TouchableOpacity onPress={() => this.registro()} style={styles.button}>
           <Text style={styles.buttonText}>Registrar</Text>
         </TouchableOpacity>
 		  </View>
@@ -165,5 +195,12 @@ const style = StyleSheet.create({
       height: 225,      
       alignSelf: 'stretch',
       marginTop:30
-    }
+    },
+    signupTextcont:{        
+    flexDirection:'row'
+  },
+  vigenciaText:{    
+    fontSize:20,
+    fontWeight:'500',
+   },
 });
