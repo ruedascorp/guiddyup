@@ -110,7 +110,7 @@ constructor(props) {
           <Picker.Item label="Automovilista" value="Automovilista"/>
           <Picker.Item label="Chofer" value="Chofer" />
         </Picker>
-             <View style={style.signupTextcont}>
+            <View style={style.signupTextcont}>
             <Text style={style.vigenciaText}>Vigencia: </Text>
              
             <DatePicker

@@ -8,6 +8,8 @@ import Signup2 from './paginas/Signup2';
 import Main from './paginas/Main';
 import Terminos from './paginas/Terminos';
 import Carsearch from './paginas/Carsearch';
+import Carresult from './paginas/Carresult';
+import Carselected from './paginas/Carselected';
 
 export default class Navegacion extends React.Component {
 	render(){
@@ -20,6 +22,8 @@ export default class Navegacion extends React.Component {
 			      <Scene key="main" component={Main} title="Main"/>
 			      <Scene key="terminos" component={Terminos} title="Terminos"/>
 			      <Scene key="carsearch" component={Carsearch} title="Busqueda Vehiculos"/>
+			      <Scene key="carresult" component={Carresult} title="Resultado Vehiculos"/>
+			      <Scene key="carselected" component={Carselected} title="Vehiculo seleccionado"/>
 			    </Stack>
 		  	</Router>
 			

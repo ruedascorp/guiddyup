@@ -26,8 +26,7 @@ render(){
         <Form nombre={this.props.nombre} apellido = {this.props.apellido} 
           email= {this.props.email}
           telefono= {this.props.telefono} 
-          password= {this.props.password} />
-        
+          password= {this.props.password} />        
       </View>
     </ImageBackground>
     )
