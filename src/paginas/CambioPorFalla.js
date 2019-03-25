@@ -1,16 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View,TouchableOpacity, Dimensions, ImageBackground,Image,AsyncStorage,BackHandler} from 'react-native';
-import Logo from '../componentes/Logo'
-import Form from '../componentes/Formmain'
+import { StyleSheet, Text, View,TouchableOpacity, ImageBackground,BackHandler,Image,Dimensions } from 'react-native';
+import Form from '../componentes/FormCambioPorFalla';
 import {Actions} from 'react-native-router-flux';
-import { Header } from 'react-native-elements';
+import { Constants } from 'expo';
 import styles from '../styles';
+import { Header } from 'react-native-elements';
 
 var { height,width } = Dimensions.get('window');
 
-export default class Main extends React.Component {		
-
-	componentDidMount() {
+export default class CambioPorFalla extends React.Component {
+  componentDidMount() {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	  }
 	
@@ -20,20 +19,19 @@ export default class Main extends React.Component {
 	
 	  handleBackPress = () => {
 		//this.goBack(); // works best when the goBack is async
-		console.log('Main:: Actions.currentScene-> ' + Actions.currentScene);
+		console.log('Carsearch:: Actions.currentScene-> ' + Actions.currentScene);
 		Actions.main();
 		return true;
 	  }
-
-	render(){
-		return(
-			<ImageBackground source={require('../imagenes/back.jpg')} style={style.container}>
-				<View >										
-					<Header     
+  render(){
+    return(
+      <ImageBackground source={require('../imagenes/back.jpg')} style={style.container}>
+        <View>
+        <Header     
 					placement="bottom"         
 					centerComponent={
 						<View style={style.box}>
-							<Text style={styles.textmenu}>MENÚ</Text>           
+							<Text style={styles.textmenu}>CAMBIO POR FALLA</Text>           
 						</View>
 					}        
 					rightComponent={
@@ -45,11 +43,11 @@ export default class Main extends React.Component {
 					}        
 					backgroundColor="#fff"
 					/>
-					<Form/>					
-				</View>
-			</ImageBackground>
-			)
-	}
+          <Form id={this.props.id}/>                 
+        </View>
+      </ImageBackground>
+      )
+  }
 }
 
 const style = StyleSheet.create({
@@ -57,10 +55,14 @@ const style = StyleSheet.create({
      flexGrow: 1,    
     alignItems: 'center',
     justifyContent: 'flex-end',             
-	},
-	box: {    
+  },  
+  statusBar: {
+    backgroundColor: "#C2185B",
+    height: Constants.statusBarHeight,
+  },
+  box: {    
     width: width-60,    
     flexGrow: 1, 
-    paddingTop:20 ,           
-  },  
+         
+  },
 });

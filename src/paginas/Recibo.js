@@ -1,15 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View,TouchableOpacity, Dimensions, ImageBackground,Image,AsyncStorage,BackHandler} from 'react-native';
-import Logo from '../componentes/Logo'
-import Form from '../componentes/Formmain'
-import {Actions} from 'react-native-router-flux';
+import { StyleSheet, Text, View, Dimensions, ImageBackground,Image, BackHandler} from 'react-native';
+import Form from '../componentes/Formrecibo'
 import { Header } from 'react-native-elements';
 import styles from '../styles';
 
 var { height,width } = Dimensions.get('window');
 
-export default class Main extends React.Component {		
-
+export default class Recibo extends React.Component {		
 	componentDidMount() {
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 	  }
@@ -21,7 +18,7 @@ export default class Main extends React.Component {
 	  handleBackPress = () => {
 		//this.goBack(); // works best when the goBack is async
 		console.log('Main:: Actions.currentScene-> ' + Actions.currentScene);
-		Actions.main();
+		Actions.recibo();
 		return true;
 	  }
 
@@ -33,7 +30,7 @@ export default class Main extends React.Component {
 					placement="bottom"         
 					centerComponent={
 						<View style={style.box}>
-							<Text style={styles.textmenu}>MENÚ</Text>           
+							<Text style={styles.textmenu}>Recibo</Text>           
 						</View>
 					}        
 					rightComponent={

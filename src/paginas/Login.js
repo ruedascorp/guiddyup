@@ -1,17 +1,32 @@
 import React from 'react';
-import { StyleSheet, Text, View,TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View,TouchableOpacity, ImageBackground, BackHandler } from 'react-native';
 import Logo from '../componentes/Logo'
 import Form from '../componentes/Formlogin'
 import {Actions} from 'react-native-router-flux';
 import { Constants } from 'expo';
 import styles from '../styles';
 
+
 export default class Login extends React.Component {
+	componentDidMount() {
+		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	  }
 	
-	signup(){
+	  componentWillUnmount() {
+		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+	  }
+	
+	  handleBackPress = () => {
+		//this.goBack(); // works best when the goBack is async
+		console.log('Main:: Actions.currentScene-> ' + Actions.currentScene);
+		Actions.login();
+		return true;
+	  }
+
+	signup(){		
 		Actions.signup()
 	}
-
+	
 	render(){
 		return(
 			<ImageBackground source={require('../imagenes/back.jpg')} style={style.container}>
