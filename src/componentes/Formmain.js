@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Dimensions, Image} from 'react-native';
+import { StyleSheet, Text, View, AsyncStorage, TouchableOpacity, Dimensions, Image} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 import styleall from '../styles';
 
@@ -9,6 +9,23 @@ var box_count = 7;
 var box_height = height / box_count;
 
 export default class Formmain extends React.Component {
+  constructor(props) {
+    super(props)   
+    this.state = {         
+      usuarioid:''
+      } 
+  }
+
+  componentDidMount(){ 
+    AsyncStorage.getItem('session_user', (err, result) => {                              
+      let resultp = JSON.parse(result); // boolean false
+      console.log("Formmain item.id:: "+resultp+", "+resultp.id);
+      this.setState({          
+        usuarioid: resultp.id
+      });                  
+    });
+    //console.log("Formmain didmount::"+this.state.usuario.id);
+  }
 
   vehiculo(){
     Actions.carsearch()
@@ -22,8 +39,8 @@ export default class Formmain extends React.Component {
 
   }
 
-  cambioporfalla(){
-
+  cambioporfalla(){    
+    Actions.cambioporfalla(this.state.usuarioid)
   }
 
   salir(){
@@ -38,14 +55,7 @@ export default class Formmain extends React.Component {
 render() {
     return (
 
-        <View style={styles.container}>
-            <View style={[styles.box, styles.box1]}>
-                <Text style={styles.textmenu}> MENÚ </Text> 
-                <Image
-                  source={require('../imagenes/logo.png')}
-                  style={styles.logoImagen}/>
-            </View>            
-     
+        <View style={styles.container}>                            
             <View style={[styles.box, styles.box2]}>
               <Image
                 source={require('../imagenes/vehiculo.png')}
@@ -54,16 +64,7 @@ render() {
               <Text style={styles.buttonText}>VEHÍCULO</Text>
               </TouchableOpacity>
             </View>
-      
-            <View style={[styles.box, styles.box2]}>
-              <Image
-                source={require('../imagenes/bus.png')}
-                style={styles.buttonImagen}/>
-              <TouchableOpacity style={styles.button} onPress={this.changehome}>
-              <Text style={styles.buttonText}>CHANGE HOME</Text>
-              </TouchableOpacity>
-            </View>{/* sdsad */}
-      
+                       
             <View style={[styles.box, styles.box2]}>
               <Image
                 source={require('../imagenes/renovar.png')}

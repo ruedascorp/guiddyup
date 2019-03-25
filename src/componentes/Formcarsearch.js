@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Picker} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, AsyncStorage, Picker, KeyboardAvoidingView } from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import DatePicker from 'react-native-datepicker'
 import styles from '../styles';
+
 
 export default class Formcarsearch extends React.Component {
 constructor(props) {
@@ -11,33 +12,143 @@ constructor(props) {
       costo: '',
       clasificacion:'',
       modelo:'',
+      direccion:'',
       ubicacion:'',
-      fecharecogida:"2018-06-01",
-      fechaentrega:"2018-06-01",
+      fecharecogida:"2018-11-01",
+      fechaentrega:"2018-11-01",
       horarecogida:'',
-      minutorecogida:''
+      minutorecogida:'',
+      costos_ws:[],
+      modelos_ws:[],
+      tipos_ws:[]
     }
   }
 
-  buscar(){
-   
-    var flatListVehiculos1 = ''; 
-    Actions.carresult({
-      flatListVehiculos: flatListVehiculos1
-    });
+  componentDidMount() {         
+    fetch('http://cuetox.pythonanywhere.com/arrendadoras/api_rango_precios/', {
+      method: 'POST',
+      headers: {        
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic amN1ZXRvOndlc2Y1MTE0',            
+      },      
+      body: JSON.stringify({
+        token:"xArkv87g9bxvstfTRnBondmWYaIvmg8s",                    
+        })
+      })
+      .then((response) => response.json())
+      .then(responseJson => {   
+        console.log('costos:::' + responseJson.toString().split(","));
+        this.setState( {
+          costos_ws : responseJson.toString().split(",")
+        });                     
+        
+      })
+      .catch((error) =>{
+        console.error(error);
+      });  
+     
+    
+    fetch('http://cuetox.pythonanywhere.com/arrendadoras/api_tipo_vehiculos/', {
+      method: 'POST',
+      headers: {        
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic amN1ZXRvOndlc2Y1MTE0',            
+      },      
+      body: JSON.stringify({
+        token:"xArkv87g9bxvstfTRnBondmWYaIvmg8s",                    
+        })
+      })
+      .then((response) => response.json())
+      .then(responseJson => {         
+        this.setState( {
+          tipos_ws : responseJson
+        });                     
+        
+      })
+      .catch((error) =>{
+        console.error(error);
+      });  
+
+      fetch('http://cuetox.pythonanywhere.com/arrendadoras/api_modelos/', {
+      method: 'POST',
+      headers: {        
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic amN1ZXRvOndlc2Y1MTE0',            
+      },      
+      body: JSON.stringify({
+        token:"xArkv87g9bxvstfTRnBondmWYaIvmg8s",                    
+        })
+      })
+      .then((response) => response.json())
+      .then(responseJson => {         
+        this.setState( {
+          modelos_ws : responseJson
+        });                     
+        
+      })
+      .catch((error) =>{
+        console.error(error);
+      });  
+  }  
+
+  buscar(){    
+      
+      var precio = this.state.costo.split("-");  
+      var preciomenor=0
+      var preciomayor=10000
+
+      let fechas_object = {
+        fecharecogida: this.state.fecharecogida,
+        fechaentrega: this.state.fechaentrega
+      }
+      AsyncStorage.setItem('fechascontrato', JSON.stringify(fechas_object));
+
+      if(precio.length > 1 )  {  
+        preciomenor=precio[0]
+        preciomayor=precio[1]
+      }
+      console.log("Servicio carsearch: "+this.state.clasificacion + this.state.modelo + preciomenor + preciomayor);
+      fetch('http://cuetox.pythonanywhere.com/arrendadoras/api_vehiculos/', {
+        method: 'POST',
+        headers: {        
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic amN1ZXRvOndlc2Y1MTE0',            
+        },      
+        body: JSON.stringify({
+          token:"xArkv87g9bxvstfTRnBondmWYaIvmg8s",    
+          "tipo":this.state.clasificacion,
+          "modelo":this.state.modelo,
+          "precio_mayor":preciomayor,
+          "precio_menor":preciomenor        
+          })
+        })
+        .then((response) => response.json())
+        .then(responseJson => {         
+          this.setState( {
+            datos : responseJson
+          });               
+              
+          Actions.carresult({
+            flatListVehiculos: responseJson            
+          });
+        })
+        .catch((error) =>{
+          console.error(error);
+        });        
   }
 
 	render(){    
 		return(		
-			<View style={style.container}>	
+			<KeyboardAvoidingView  style={style.container} behavior="padding" enabled>	
           <Picker 
             ref={(input) => this.costo = input}
             selectedValue={this.state.costo}
             style={styles.selectBox} 
             onValueChange={(itemValue, itemIndex) => this.setState({costo: itemValue})}>          
-            <Picker.Item label="Seleccione costo"/>
-            <Picker.Item label="200-800" value="200-800"/>
-            <Picker.Item label="Todos" value="all" />
+            <Picker.Item label="Seleccione costo" value=""/>                     
+            {this.state.costos_ws.map((item,key)=>(
+            <Picker.Item label={item.toString()} value={item.toString()} key={key}/> )
+            )}
           </Picker>
           
           <Picker 
@@ -45,25 +156,34 @@ constructor(props) {
             selectedValue={this.state.clasificacion}
             style={styles.selectBox} 
             onValueChange={(itemValue, itemIndex) => this.setState({clasificacion: itemValue})}>          
-            <Picker.Item label="Seleccione clasificacion" value="all" />
-            <Picker.Item label="Auto Compacto" value="Auto"/>
-            <Picker.Item label="Todos" value="all" />
-          </Picker>          
+            <Picker.Item label="Seleccione tipo" value="" />            
+            {this.state.tipos_ws.map((item,key)=>(
+            <Picker.Item label={item.tipo} value={item.id} key={key}/> )
+            )}
+          </Picker>
+
           <Picker 
             ref={(input) => this.modelo = input}
             selectedValue={this.state.modelo}
             style={styles.selectBox} 
-            onValueChange={(itemValue, itemIndex) => this.setState({modelo: itemValue})}>          
-            <Picker.Item label="Seleccione modelo" value="all" />
-            <Picker.Item label="Algún modelo" value="Modelo"/>
-            <Picker.Item label="Todos" value="all" />
-          </Picker>          
+            onValueChange={(itemValue, itemIndex) => this.setState({modelo: itemValue})}>        
+            <Picker.Item label="Seleccione modelo" value="" />
+            {this.state.modelos_ws.map((item,key)=>(
+            <Picker.Item label={item.modelo} value={item.id} key={key}/> )
+            )}                          
+          </Picker>                
+          <TextInput style={styles.inputBox}
+          underlineColorAndroid='rgba(0,0,0,0)'
+          placeholder='Domicilio'
+          selectionColor="#fff"          
+          value={this.state.direccion}
+          onChangeText={(direccion) => this.setState({direccion})}/>
         
           <View style={style.signupTextcont}>
-            <Text style={style.vigenciaText}>Fecha recogida: </Text>           
+            <Text style={style.vigenciaText}>Recogida: </Text>           
             <DatePicker
               style={{width: 150}}
-              fecharecogida={this.state.fecharecogida}
+              date={this.state.fecharecogida}
               mode="date"
               placeholder="select date"
               format="YYYY-MM-DD"
@@ -87,11 +207,11 @@ constructor(props) {
             />     
           </View>
 
-          <View style={style.signupTextcont}>
-            <Text style={style.vigenciaText}>Fecha entrega: </Text>             
+          <View style={[style.signupTextcont,style.espacios]}>
+            <Text style={style.vigenciaText}>Entrega: </Text>             
             <DatePicker
               style={{width: 150}}
-              fechaentrega={this.state.fechaentrega}
+              date={this.state.fechaentrega}
               mode="date"
               placeholder="select date"
               format="YYYY-MM-DD"
@@ -114,43 +234,11 @@ constructor(props) {
               onDateChange={(fechaentrega) => {this.setState({fechaentrega: fechaentrega})}}
             />     
 
-          </View>
-
-          <Picker 
-            ref={(input) => this.horarecogida = input}
-            selectedValue={this.state.horarecogida}
-            style={styles.selectBox} 
-            onValueChange={(itemValue, itemIndex) => this.setState({horarecogida: itemValue})}>          
-            <Picker.Item label="Seleccione Hora"/>
-            <Picker.Item label="0" value="0"/>
-            <Picker.Item label="1" value="1"/>
-            <Picker.Item label="2" value="2"/>
-            <Picker.Item label="3" value="3"/>
-            <Picker.Item label="4" value="4"/>
-            <Picker.Item label="5" value="5"/>
-            <Picker.Item label="6" value="6"/>
-            <Picker.Item label="7" value="7"/>
-            <Picker.Item label="8" value="8"/>
-            <Picker.Item label="9" value="9"/>
-            <Picker.Item label="10" value="10"/>
-            <Picker.Item label="11" value="11"/>
-            <Picker.Item label="12" value="12"/>
-          </Picker>
-          <Picker 
-            ref={(input) => this.minutorecogida = input}
-            selectedValue={this.state.minutorecogida}
-            style={styles.selectBox} 
-            onValueChange={(itemValue, itemIndex) => this.setState({minutorecogida: itemValue})}>          
-            <Picker.Item label="Seleccione Minuto"/>
-            <Picker.Item label="00" value="0"/>
-            <Picker.Item label="15" value="15"/>
-            <Picker.Item label="30" value="30"/>
-            <Picker.Item label="45" value="45"/>            
-          </Picker>
+          </View>         
         <TouchableOpacity style={styles.button} onPress={() => this.buscar()}>
           <Text style={styles.buttonText}>Buscar</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
       )
   }
 }
@@ -159,13 +247,17 @@ const style = StyleSheet.create({
   container: {
     flexGrow: 1,    
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center', 
+    flexDirection: 'column',
     },    
-    signupTextcont:{        
+  signupTextcont:{        
     flexDirection:'row'
   },
   vigenciaText:{    
     fontSize:20,
     fontWeight:'500',
    },
+   espacios:{
+     paddingTop:10
+   }
 });

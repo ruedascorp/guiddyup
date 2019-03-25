@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Image, Dimensions, Picker, ImageEditor} from 'react-native';
-import { ImagePicker } from 'expo';
+import { ImagePicker, ImageManipulator} from 'expo';
 import DatePicker from 'react-native-datepicker'
 import {Actions} from 'react-native-router-flux';
 import styles from '../styles';
@@ -15,7 +15,8 @@ constructor(props) {
       licencia: '',
       categoria:'',
       date:"2018-06-01",
-      image: null,      
+      image: null,    
+      manipulatorResultBase64: null  
     }
   }
 
@@ -58,6 +59,23 @@ constructor(props) {
                 name: 'testPhotoName'}
             */
           });
+          
+          //console.log('Formsignup2: 2 registro fetch:::' + this.state.manipulatorResultBase64);
+
+          fetch('http://cuetox.pythonanywhere.com/usuarios/recived_license_image/', {
+            method: 'POST',
+            headers: {        
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic amN1ZXRvOndlc2Y1MTE0',
+            },      
+            body: JSON.stringify({
+              token:"xArkv87g9bxvstfTRnBondmWYaIvmg8s",
+              user:this.props.email,
+              password:this.props.password,              
+              licencia: this.state.manipulatorResultBase64
+            }),            
+          });
+          
         }catch(err){
           console.log('falla fetch:::'+err.toString());
         }
@@ -179,11 +197,36 @@ constructor(props) {
       );
     });
     
+    const actions = []
     // this gives you a rct-image-store URI or a base64 image tag that
     // you can use from ImageStore
-
+    const manipulatorResult = await ImageManipulator.manipulate(resizedUri, actions, {
+      base64: true,
+    })
+    
+    this.setState({ manipulatorResultBase64:manipulatorResult.base64  })
     this.setState({ image: resizedUri });
+    //console.log('Formsignup2: 2 registro fetch:::' + this.state.manipulatorResultBase64);
   };
+
+  _pickImageButtonPressed = async () => {
+    console.log('here')
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({})
+
+    const uri = pickerResult.uri
+
+    const actions = []
+
+    actions.push({ resize: { width:50, height: 50 } })
+
+    const manipulatorResult = await ImageManipulator.manipulate(uri, actions, {
+      base64: false,
+    })
+    this.setState({ image: uri });
+    this.setState({ manipulatorResultBase64:manipulatorResult.base64  })
+
+  }
+
 }
 
 const style = StyleSheet.create({
@@ -193,10 +236,11 @@ const style = StyleSheet.create({
     alignItems: 'center',
     },
     imagen:{
-      width: width,
+      width: width-20,
       height: 225,      
       alignSelf: 'stretch',
-      marginTop:30
+      marginTop:20,
+      marginLeft:37
     },
     signupTextcont:{        
     flexDirection:'row'

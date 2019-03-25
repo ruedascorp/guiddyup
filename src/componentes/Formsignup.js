@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native';
 import { Actions } from 'react-native-router-flux'
 import styles from '../styles';
 
@@ -47,7 +47,7 @@ constructor(props) {
 
 	render(){    
 		return(		
-			<View style={style.container}>	
+			<KeyboardAvoidingView style={style.container} behavior="padding" enabled> 	
           <TextInput style={styles.inputBox} 
           underlineColorAndroid='rgba(0,0,0,0)' 
           placeholder='Nombre'          
@@ -105,7 +105,7 @@ constructor(props) {
         <TouchableOpacity style={styles.button} onPress={() => this.registro2()}>
           <Text style={styles.buttonText}>Siguiente</Text>
         </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
       )
   }
 }
